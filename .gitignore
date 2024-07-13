@@ -1,0 +1,15 @@
+build
+dist
+
+/node_modules
+
+**/.DS_Store
+
+.env
+.env.local
+.env.*
+!.env*.example
+
+**.zip
+
+.vscode

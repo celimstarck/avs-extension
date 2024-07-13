@@ -1,0 +1,15 @@
+body * {
+  display: block;
+}
+
+html {
+  background: linear-gradient(59deg, #101318 0%, #1a1c21 100%), #f0f2f6;
+  color: white;
+}
+
+#container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
