@@ -1,5 +1,35 @@
 import Chart from 'chart.js/auto';
 
+import axios, { AxiosResponse } from 'axios';
+
+// Define an interface for the request data
+interface Post {
+  operatorAddress: string;
+}
+
+// Define an interface for the response data
+interface CreatedPost extends Post {
+  id: number;
+}
+
+// Function to create a new post
+async function createPost(postData: Post): Promise<CreatedPost> {
+  try {
+    // Make a POST request
+    const response: AxiosResponse<CreatedPost> = await axios.post(
+      'https://52cc-178-51-98-244.ngrok-free.app/dev/getOperatorAvsRelationshipAtBlock',
+      postData
+    );
+
+    // Return the response data
+    return response.data;
+  } catch (error) {
+    // Handle error
+    console.error('Error creating post:', error);
+    throw error;
+  }
+}
+
 async function displayChart() {
   // Wait for the DOM to be fully loaded
   setTimeout(() => {
@@ -145,5 +175,14 @@ window.addEventListener('load', async function () {
 
   // Logic for when the full page is ready
   console.log('coucou');
+
   displayChart();
+  /* const createdPost = (window as any).createdPost;
+  console.log('createdPost1:', createdPost);
+  if (createdPost) {
+    console.log('Accessing Created Post in operator.ts:', createdPost);
+    // Now you can use createdPost1 data in your operator.ts logic
+  } else {
+    console.error('createdPost1 data is not available');
+  } */
 });

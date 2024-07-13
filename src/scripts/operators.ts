@@ -1,40 +1,12 @@
 import getOperatorData from '../api/getOperatorData';
 
-async function attach() {
-  console.log('in attach');
-
-  console.log('coucou1');
-  console.log(document);
-
-  const loadingBox = document.createElement('div');
-  loadingBox.classList.add('test');
-  loadingBox.classList.add('loading-animation');
-
-  const revelioBox = document.createElement('div');
-  revelioBox.id = 'revelio-container';
-  revelioBox.classList.add('test');
-
-  /* const logo = document.createElement('img');
-
-  logo.src = 'https://i.ibb.co/FYwGpKX/Icon-Showcase.png';
-
-  revelioBox.appendChild(logo);
- */
-  const header = document.createElement('h2');
-  header.textContent = 'Transaction Explanation';
-
-  revelioBox.appendChild(header);
-
+async function displayOperators() {
   const explanationContainer = document.createElement('div');
   explanationContainer.classList.add('explanation');
 
-  console.log('test');
+  //const test = document.querySelector('div[data-cypress="restakedBalance"]');
 
-  const test = document.querySelector('div[data-cypress="restakedBalance"]');
-  console.log('test;', test);
-
-  const test2 = document.querySelector('ag-center-cols-container');
-  console.log('test22222;', test2);
+  //const test2 = document.querySelector('ag-center-cols-container');
 
   /* const container = document.querySelector(explorerSelector[explorer]); */
 
@@ -133,16 +105,10 @@ async function attach() {
     observeTable();
   }, 2000); // Attendre 1 seconde
 
-  /* 
-  setTimeout(() => {
-    const rows = document.querySelectorAll('div[role="row"]');
-    console.log(rows);
-  }, 1000); // Attendre 1 seconde */
-
   let newDiv = document.createElement('div');
   newDiv.innerHTML = '<h1>NEFTURE AVS</h1>';
   document.body.appendChild(newDiv);
 }
 
 console.log('@@ Extension is Loading');
-window.addEventListener('load', attach);
+window.addEventListener('load', displayOperators);

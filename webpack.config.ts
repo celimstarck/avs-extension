@@ -21,9 +21,9 @@ const options: Configuration = {
   entry: {
     popup: path.join(__dirname, 'src', 'pages', 'Popup', 'index.tsx'),
     walletpopup: path.join(__dirname, 'src', 'pages', 'WalletPopup', 'index.tsx'),
-    //background: path.join(__dirname, 'src', 'scripts', 'background'),
-    attach: path.join(__dirname, 'src', 'scripts', 'attach.ts'),
-    'attach.content': path.join(__dirname, 'src', 'scripts', 'attach.content.ts'),
+    background: path.join(__dirname, 'src', 'scripts', 'background'),
+    operators: path.join(__dirname, 'src', 'scripts', 'operators.ts'),
+    'operators.content': path.join(__dirname, 'src', 'scripts', 'operators.content.ts'),
     operator: path.join(__dirname, 'src', 'scripts', 'operator.ts'),
     'operator.content': path.join(__dirname, 'src', 'scripts', 'operator.content.ts'),
     avs: path.join(__dirname, 'src', 'scripts', 'avs.ts'),

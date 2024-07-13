@@ -7,7 +7,7 @@
 
 import { InternalMessage } from '../types/internal';
 
-// Attach on Page scope
+// Operators on Page scope
 async function injectScript(url: string) {
   const script = document.createElement('script');
   script.src = chrome.runtime.getURL(url);
@@ -29,5 +29,4 @@ window.addEventListener(
   false
 );
 
-/* Inject wallet attach script */
-injectScript('attach.bundle.js');
+injectScript('operators.bundle.js');

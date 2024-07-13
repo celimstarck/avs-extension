@@ -1,0 +1,19 @@
+/* Style for the card */
+.card {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #ff0000;
+  }
+  
+  /* Style for the container */
+  .chart-container {
+    display: flex;
+    margin-top: 20px;
+    gap: 20px; /* Space between columns */
+  }
+  
+  /* Style for the columns */
+  .column {
+    flex: 1; /* Make columns flexible to take up available space */
+  }

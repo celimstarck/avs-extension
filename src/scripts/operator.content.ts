@@ -1,6 +1,13 @@
-// Attach on Page scope
+/*
+    This is a content script
+    * Content script is accessible to `chorme.runtime` for example.
+    * Injected Script runs in the 'page' level and not in the 'content script' level
+        * Page can't access the chrome.runtime or other extension API
+*/
+
 import { InternalMessage } from '../types/internal';
 
+// Operators on Page scope
 async function injectScript(url: string) {
   const script = document.createElement('script');
   script.src = chrome.runtime.getURL(url);
@@ -11,7 +18,15 @@ async function injectScript(url: string) {
   node.prepend(script);
 }
 
-console.log('injecting explorer');
+// Listen for page level events
+window.addEventListener(
+  'FromPage',
+  function (event: CustomEventInit<InternalMessage>) {
+    chrome.runtime.sendMessage(event.detail, function (response) {
+      console.log(response);
+    });
+  },
+  false
+);
 
-/* Inject explorer script */
 injectScript('operator.bundle.js');

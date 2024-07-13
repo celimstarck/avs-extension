@@ -19,31 +19,8 @@ type Parameters = {
 };
 
 function getParameters(env: Environments | undefined): Parameters {
-  if (env === 'development') {
-    return {
-      name: 'Revelio Dev',
-      icons: {
-        '16': 'assets/img/logos/logo-dev.png',
-        '32': 'assets/img/logos/logo-dev.png',
-        '48': 'assets/img/logos/logo-dev.png',
-        '128': 'assets/img/logos/logo-dev.png',
-      },
-    };
-  }
-
-  if (env === 'staging') {
-    return {
-      name: 'Revelio Staging',
-      icons: {
-        '16': 'assets/img/logos/logo-staging.png',
-        '32': 'assets/img/logos/logo-staging.png',
-        '48': 'assets/img/logos/logo-staging.png',
-        '128': 'assets/img/logos/logo-staging.png',
-      },
-    };
-  }
   return {
-    name: 'Revelio',
+    name: 'KYA',
     icons: {
       '16': 'assets/img/logos/logo-prod.png',
       '32': 'assets/img/logos/logo-prod.png',
@@ -61,49 +38,58 @@ export const manifest: Manifest.WebExtensionManifest = {
   manifest_version: 3,
   name,
   version: version,
-  description: 'Starknet transactions will never be a mistery again',
+  host_permissions: ['<all_urls>'],
+  description: 'Know your AVS on EigenLayer!',
+  content_security_policy: {
+    sandbox:
+      "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';",
+    extension_pages:
+      "script-src 'self'; object-src 'self'; connect-src 'self' https://*.vercel-scripts.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://polygon-mumbai-infura.wallet.coinbase.com https://cloudflare-eth.com https://api-prod-useast1.eigenlayer.xyz https://rpc.ankr.com https://mainnet-infura.wallet.coinbase.com/ https://explorer-api.walletconnect.com/ wss://*.walletconnect.org wss://relay.walletconnect.com wss://*.walletlink.org https://*.walletconnect.com https://*.sentry.io https://*.alchemy.com https://ethereum-holesky.publicnode.com https://webserver-testnet-holesky.eigenlayer.xyz https://webserver-preprod-holesky.eigenlayer.xyz https://webserver-mainnet-ethereum.eigenlayer.xyz https://api.web3modal.com https://ethereum-rpc.publicnode.com https://eth.merkle.io https://eth.llamarpc.com https://ethereum-holesky-rpc.publicnode.com https://52cc-178-51-98-244.ngrok-free.app;",
+  },
   icons,
-  /* background: {
+  background: {
     service_worker: 'background.bundle.js',
     type: 'module',
-  }, */
+  },
   content_scripts: [
     {
       matches: ['https://app.eigenlayer.xyz/operator'],
-      js: ['attach.content.bundle.js'],
-      css: ['assets/css/explorer.css'],
+      js: ['operators.content.bundle.js'],
+      css: ['assets/css/operators.css'],
       all_frames: true,
-      run_at: 'document_idle',
+      run_at: 'document_start',
     },
-
     {
       matches: ['https://app.eigenlayer.xyz/operator/*'],
       js: ['operator.content.bundle.js'],
-      css: ['assets/css/explorer.css'],
+      css: ['assets/css/operator.css'],
       all_frames: true,
-      run_at: 'document_idle',
+      run_at: 'document_start',
     },
     {
       matches: ['https://app.eigenlayer.xyz/avs/*'],
       js: ['avs.content.bundle.js'],
-      css: ['assets/css/explorer.css'],
+      css: ['assets/css/avs.css'],
       all_frames: true,
-      run_at: 'document_idle',
+      run_at: 'document_start',
     },
   ],
   action: {
     default_popup: 'popup.html',
   },
-  //permissions: ['tabs'],
+  permissions: ['scripting', 'activeTab'],
   web_accessible_resources: [
     {
-      resources: ['attach.bundle.js'],
+      resources: ['operators.bundle.js'],
+      matches: ['<all_urls>'],
     },
     {
       resources: ['operator.bundle.js'],
+      matches: ['<all_urls>'],
     },
     {
       resources: ['avs.bundle.js'],
+      matches: ['<all_urls>'],
     },
   ],
 };

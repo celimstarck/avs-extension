@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-//import logoWide from '../../assets/img/logos/revelio-wide.png';
 
 import '../../assets/css/popup.css';
 
