@@ -58,6 +58,49 @@ type getOperatorAVSSecuredType = {
   operatorAddress: string;
 };
 
+export async function getRestakersPerOperator(operatorAddress: string) {
+  const apiUrl = 'https://52cc-178-51-98-244.ngrok-free.app/dev/getWeeklyRestaskerCountForOperator';
+
+  try {
+    const data = {
+      operatorAddress: operatorAddress,
+    };
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(data),
+    });
+
+    switch (response.status) {
+      case 200:
+        const jsonResponse = await response.json();
+        if (jsonResponse.status === 'success') {
+          const dates: string[] = Object.keys(jsonResponse.stakerCountsByWeek);
+          const numbers: any[] = Object.values(jsonResponse.stakerCountsByWeek);
+          return [dates, numbers];
+        }
+        break;
+      case 400:
+        console.error('400: Bad Request');
+        break;
+      case 404:
+        console.error('404: Not Found');
+        break;
+      case 500:
+        console.error('500: Internal Server Error');
+        break;
+      default:
+        console.error('Unknown Error:', response.status);
+        break;
+    }
+  } catch (error) {
+    console.error('Fetch Error:', error);
+  }
+}
+
 export async function getOperatorAVSSecured(operatorAddress: string) {
   const apiUrl = process.env['BASE_URL_API_ENDPOINT'] + API_ENDPOINT;
 

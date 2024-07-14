@@ -11,15 +11,10 @@
 
 */
 
-import { getOperatorAVSSecured } from '../api/getOperatorData';
+import { getOperatorAVSSecured, getRestakersPerOperator } from '../api/getOperatorData';
 import getListFromAVSOperatorData from '../helpers/getLists';
-import { InternalMessage } from '../types/internal';
-import axios, { AxiosResponse } from 'axios';
 
 // Define an interface for the request data
-interface Post {
-  operatorAddress: string;
-}
 
 async function handleMessage(event: any) {
   if (event.source !== window || event.data.type !== 'SEND_DATA') {
@@ -30,10 +25,12 @@ async function handleMessage(event: any) {
 
   /* const test = await createPost({ operatorAddress: frontendData.operatorAddress }); */
   const test = await getOperatorAVSSecured(frontendData);
-  if (test) {
+  const restakers = await getRestakersPerOperator(frontendData);
+  if (test && restakers) {
     const test2 = getListFromAVSOperatorData(test);
     (window as any).test = test2;
-    const eventCustom = new CustomEvent('OperatorRequest', { detail: test2 });
+    (window as any).restakers = restakers;
+    const eventCustom = new CustomEvent('OperatorRequest', { detail: [test2, restakers] });
     window.dispatchEvent(eventCustom);
   }
 }

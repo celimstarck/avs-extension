@@ -104,7 +104,7 @@ async function displayChart() {
 
       // Add title for the radar chart
       const radarTitle = document.createElement('h3');
-      radarTitle.innerText = 'Radar Chart';
+      radarTitle.innerText = 'AVS Risk Chart';
       leftColumn.appendChild(radarTitle);
 
       // Create a canvas element for the radar chart
@@ -177,7 +177,7 @@ async function displayChart() {
             labels: chartLabels,
             datasets: [
               {
-                label: '# of Votes',
+                label: 'Risk Score',
                 data: chartData,
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgba(54, 162, 235, 1)',
