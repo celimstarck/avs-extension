@@ -117,7 +117,7 @@ async function displayChart() {
             labels: restakersDate,
             datasets: [
               {
-                label: 'Number of secured AVS',
+                label: "Number of operator's restakers",
                 data: restakersCount,
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',

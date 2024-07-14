@@ -15,3 +15,10 @@ We have developed several metodologies to assess the risks of each factor, in re
 # Example
 
 ![alt text](image.png)
+
+![alt text](image-1.png)
+
+# Future Enhancements
+
+- Score directly injected on the rows
+- Real-time data feed on AVS risk factors for Oracles
