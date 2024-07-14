@@ -1,5 +1,5 @@
 export type OperatorAVSSecured = {
-  blockTimestamps: string[];
+  dates: string[];
   liveCount: number[];
 };
 

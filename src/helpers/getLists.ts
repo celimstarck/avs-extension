@@ -1,25 +1,27 @@
 import { OperatorAVSRelationshipElement, OperatorAVSRelationshipEndpoint } from '../types/OperatorAVSTypes';
 import { OperatorAVSSecured } from '../types/OperatorAVSTypes';
+import formatTimestampToMonthYear from '../utils/formatTimestampToMonthYear';
 
 function getListFromAVSOperatorData(results: OperatorAVSRelationshipElement[]): OperatorAVSSecured {
   // Trier les résultats par blockTimeStamp
   const sortedResults = results.sort((a, b) => a.blockTimestamp - b.blockTimestamp);
 
-  const blockTimestamps: string[] = [];
+  const dates: string[] = [];
   const liveCount: number[] = [];
 
   let cumulativeStatus = 0;
 
   // Itérer sur les résultats triés
   for (const result of sortedResults) {
-    blockTimestamps.push(result.blockTimestamp.toString());
+    const date = formatTimestampToMonthYear(result.blockTimestamp);
+    dates.push(date);
 
     // Cumuler le statut
     cumulativeStatus += result.status ? 1 : -1;
     liveCount.push(cumulativeStatus);
   }
 
-  return { blockTimestamps, liveCount };
+  return { dates, liveCount };
 }
 
 export default getListFromAVSOperatorData;

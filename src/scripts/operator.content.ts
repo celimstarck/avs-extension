@@ -14,34 +14,11 @@
 import { getOperatorAVSSecured } from '../api/getOperatorData';
 import getListFromAVSOperatorData from '../helpers/getLists';
 import { InternalMessage } from '../types/internal';
-import { OperatorAVSRelationshipEndpoint } from '../types/OperatorAVSTypes';
-import { OperatorAVSSecured } from '../types/OperatorAVSTypes';
 import axios, { AxiosResponse } from 'axios';
 
 // Define an interface for the request data
 interface Post {
   operatorAddress: string;
-}
-async function createPost(postData: Post) {
-  console.log('on est dans create post');
-  try {
-    // Make a POST request
-    console.log('response axios......');
-    const response: AxiosResponse = await axios.post(
-      'https://52cc-178-51-98-244.ngrok-free.app/dev/getOperatorAvsRelationshipAtBlock',
-      postData
-    );
-    console.log('response:', response);
-
-    console.log('fin de la req axios');
-
-    // Return the response data
-    return response.data;
-  } catch (error) {
-    // Handle error
-    console.error('Error creating post:', error);
-    throw error;
-  }
 }
 
 async function handleMessage(event: any) {
@@ -49,12 +26,8 @@ async function handleMessage(event: any) {
     return;
   }
 
-  console.log('event handleMessage:', event);
-
   const frontendData = event.data.data;
-  console.log('frontendData:', frontendData);
 
-  console.log('coucoucoucoucouo');
   /* const test = await createPost({ operatorAddress: frontendData.operatorAddress }); */
   const test = await getOperatorAVSSecured(frontendData);
   if (test) {

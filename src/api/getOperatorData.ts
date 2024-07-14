@@ -1,11 +1,14 @@
 import axios from 'axios';
 // import { apiBaseUrl } from '../environments/api';
+import operatorRiskData from '../data/operator_risk_data';
+import { OperatorRiskDataType } from '../types/test';
 
 interface Dictionary {
   [key: string]: any;
 }
 
-const API_ENDPOINT = 'getOperatorAvsRelationshipAtBlock';
+//const API_ENDPOINT = 'getOperatorAvsRelationshipAtBlock';
+const API_ENDPOINT = 'getSpecificOperatorAvsRegistrationEvents';
 
 const dict: Dictionary = {
   'Pro Delegators': 40,
@@ -14,7 +17,19 @@ const dict: Dictionary = {
   Ultra: 123,
 };
 
-function getOperatorData(operatorName: string | null | undefined) {
+function getOperatorDate(operatorAddress: string | null | undefined) {
+  if (operatorAddress == null || operatorAddress == undefined) {
+    return -1;
+  }
+}
+
+function getTrustLevelByAddress(address: string | null | undefined, dataList: OperatorRiskDataType[]): number | null {
+  const foundOperator = dataList.find((operator) => operator.operatorAddress === address);
+
+  return foundOperator ? foundOperator.score : null; // Return score or null if not found
+}
+
+function getOperatorData2(operatorName: string | null | undefined) {
   if (operatorName == null || operatorName == undefined) {
     return -1;
   }
@@ -24,11 +39,6 @@ function getOperatorData(operatorName: string | null | undefined) {
     return 'No data';
   }
 }
-
-type OperatorAVSSecured = {
-  blockTimestamps: string[];
-  liveCount: number[];
-};
 
 type OperatorAVSRelationshipElement = {
   operator: string;
@@ -56,8 +66,6 @@ export async function getOperatorAVSSecured(operatorAddress: string) {
       operatorAddress: operatorAddress,
     };
 
-    console.log('Data:', data);
-
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -71,16 +79,6 @@ export async function getOperatorAVSSecured(operatorAddress: string) {
         const jsonResponse = (await response.json()) as OperatorAVSRelationshipEndpoint;
         if (jsonResponse.status === 'success') {
           return jsonResponse.results;
-          /*const blockTimestamps = jsonResponse.results.map((result) => {
-            console.log('result blockTimestamps:', result);
-            const test = result.blockTimestamp;
-            console.log('result blocksitimetamp, te', test);
-            const testDate = new Date(test);
-            console.log('testDate:. ', testDate);
-            return new Date(result.blockTimestamp * 1000).toISOString();
-          });
-          const liveCount = jsonResponse.results.map((result) => result.blockNumber); // Adjust according to actual required data
-          return { blockTimestamps, liveCount }; */
         }
         break;
       case 400:
@@ -101,4 +99,4 @@ export async function getOperatorAVSSecured(operatorAddress: string) {
   }
 }
 
-export default getOperatorData;
+export default getTrustLevelByAddress;

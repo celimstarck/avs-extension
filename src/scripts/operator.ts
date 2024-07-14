@@ -12,33 +12,16 @@ async function displayChart() {
   const currentUrl = window.location.href;
   const operatorAddress = extractAddressFromURL(currentUrl);
   sendDataToContentScript(operatorAddress);
-  console.log('currentUrl', currentUrl);
 
-  console.log('targetOperatorAddress:', targetOperatorAddress);
-
-  const frontendData = {
-    operatorAddress: '0xa42cd0029f681b08b61f535e846f2a36f468c1c2',
-  };
-  console.log('heuy displaycart');
-
-  console.log('just before addEventListener');
   window.addEventListener('OperatorRequest', (event: any) => {
-    console.log('event;', event);
-    console.log('heuy');
     // Radar Chart
-    console.log('check event operator: ', event);
 
-    const chartLabels = event.detail.blockTimestamps;
+    const chartLabels = event.detail.dates;
     const chartData = event.detail.liveCount;
-
-    console.log('chartLabels', chartLabels);
-    console.log('chartData', chartData);
 
     const targetElementRadar = document.querySelector(
       '.flex.cursor-pointer.items-center.justify-between.rounded-lg.bg-black-800\\/5.px-4.py-3.hover\\:bg-black-800\\/10.hover\\:text-blue-800'
     );
-
-    console.log('targetElementRadar:', targetElementRadar);
 
     if (targetElementRadar) {
       // Create a div for the chart container
@@ -99,8 +82,6 @@ async function displayChart() {
 
     // Multiple Line Chart
     const targetElementLine = document.querySelector('.flex.justify-between.rounded-lg.bg-white.p-4');
-
-    console.log('targetElementLine:', targetElementLine);
 
     if (targetElementLine) {
       // Create a div for the chart container
@@ -167,6 +148,5 @@ window.addEventListener('load', async function () {
   console.log('All resources finished loading!');
 
   // Logic for when the full page is ready
-  console.log('coucou');
   displayChart();
 });

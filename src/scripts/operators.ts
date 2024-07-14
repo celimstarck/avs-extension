@@ -1,4 +1,6 @@
+import getTrustLevelByAddress from '../api/getOperatorData';
 import getOperatorData from '../api/getOperatorData';
+import operatorRiskData from '../data/operator_risk_data';
 
 async function displayOperators() {
   const explanationContainer = document.createElement('div');
@@ -36,36 +38,19 @@ async function displayOperators() {
 
   var rows = document.querySelectorAll('div[role="row"]');
 
-  console.log('rows:', rows);
-
   /* ------------------------------------- */
 
   setTimeout(() => {
     // On chope les rows
     const rows = document.querySelectorAll('div[role="row"]');
-    console.log(rows);
 
     function addNewColumn() {
       const rows = document.querySelectorAll('div[role="row"]');
 
-      // Check if the header already has the new column
-      /*   const headerRow = document.querySelector('div[role="row"][row-index="0"]');
-      if (headerRow) {
-        if (!headerRow.querySelector('.new-column-header')) {
-          const headerCell = document.createElement('div');
-          headerCell.className = 'ag-cell ag-cell-not-inline-editing ag-column-last ag-cell-value new-column-header';
-          headerCell.innerText = 'Nouvelle Colonne';
-
-          headerRow.appendChild(headerCell);
-        }
-      } else {
-        console.log('header row null (in addNewColumn)');
-      } */
-
       // Add new cell to each row
       rows.forEach((row, index) => {
         const operatorName = row.firstChild?.textContent;
-        const operatorData = getOperatorData(operatorName);
+        const operatorData = getTrustLevelByAddress(operatorName, operatorRiskData);
 
         if (!row.querySelector('.new-cell')) {
           const newCell = document.createElement('div');
@@ -74,35 +59,14 @@ async function displayOperators() {
           newCell.style.paddingLeft = '300px'; // Add padding to move text to the right
           //newCell.innerText = `Données ${index + 1}`; // Replace this with your data
           newCell.innerText = `${operatorData}`;
-          //console.log('newCell.firstChild?.textContent', newCell.firstChild?.textContent);
           row.appendChild(newCell);
         }
       });
     }
 
-    function observeTable() {
-      const targetNode = document.querySelector('.ag-center-cols-viewport');
-
-      if (!targetNode) return;
-
-      const config = { childList: true, subtree: true };
-
-      const callback = (mutationsList: any) => {
-        for (const mutation of mutationsList) {
-          if (mutation.type === 'childList') {
-            addNewColumn();
-          }
-        }
-      };
-
-      const observer = new MutationObserver(callback);
-
-      observer.observe(targetNode, config);
-    }
     addNewColumn();
 
     // Observe changes to the table
-    observeTable();
   }, 2000); // Attendre 1 seconde
 
   let newDiv = document.createElement('div');
@@ -110,5 +74,4 @@ async function displayOperators() {
   document.body.appendChild(newDiv);
 }
 
-console.log('@@ Extension is Loading');
 window.addEventListener('load', displayOperators);
