@@ -7,6 +7,23 @@ interface Post {
   operatorAddress: string;
 }
 
+async function handleMessage(event: any) {
+  if (event.source !== window || event.data.type !== 'SEND_DATA') {
+    return;
+  }
+
+  console.log('event handleMessage:', event);
+
+  const frontendData = event.data.data;
+  console.log('frontendData:', frontendData);
+
+  console.log('coucoucoucoucouo');
+  const test = await createPost({ operatorAddress: frontendData.operatorAddress });
+  (window as any).test = test;
+  const eventCustom = new CustomEvent('createdPostReady', { detail: test });
+  window.dispatchEvent(eventCustom);
+}
+
 // Define an interface for the response data
 
 // Function to create a new post
@@ -31,12 +48,6 @@ async function createPost(postData: Post) {
     throw error;
   }
 }
-injectScript('avs.bundle.js');
-
-const test = await createPost({ operatorAddress: '0xeb6a4540cfd0d55bc222314f96938b523cc925c1' });
-(window as any).test = test;
-const event = new CustomEvent('createdPostReady', { detail: test });
-window.dispatchEvent(event);
 
 // Function to inject a script into the page
 function injectScript(url: string) {
@@ -47,5 +58,8 @@ function injectScript(url: string) {
   script.type = 'module';
   (document.head || document.documentElement).appendChild(script);
 }
+
+injectScript('avs.bundle.js');
+window.addEventListener('message', handleMessage);
 
 // Initial injection of the script

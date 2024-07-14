@@ -1,9 +1,39 @@
 import Chart from 'chart.js/auto';
+import extractAddressFromURL from '../utils/extractAddressFromURL';
+
+function sendDataToContentScript(data: any) {
+  window.postMessage({ type: 'SEND_DATA', data: data }, '*');
+}
 
 async function displayChart() {
   // Wait for the DOM to be fully loaded
-  setTimeout(() => {
+
+  const targetOperatorAddress = document.querySelector('.text-TextS.font-abcRepro.font-normal');
+  const currentUrl = window.location.href;
+  const operatorAddress = extractAddressFromURL(currentUrl);
+  sendDataToContentScript(operatorAddress);
+  console.log('currentUrl', currentUrl);
+
+  console.log('targetOperatorAddress:', targetOperatorAddress);
+
+  const frontendData = {
+    operatorAddress: '0xa42cd0029f681b08b61f535e846f2a36f468c1c2',
+  };
+  console.log('heuy displaycart');
+
+  console.log('just before addEventListener');
+  window.addEventListener('OperatorRequest', (event: any) => {
+    console.log('event;', event);
+    console.log('heuy');
     // Radar Chart
+    console.log('check event operator: ', event);
+
+    const chartLabels = event.detail.blockTimestamps;
+    const chartData = event.detail.liveCount;
+
+    console.log('chartLabels', chartLabels);
+    console.log('chartData', chartData);
+
     const targetElementRadar = document.querySelector(
       '.flex.cursor-pointer.items-center.justify-between.rounded-lg.bg-black-800\\/5.px-4.py-3.hover\\:bg-black-800\\/10.hover\\:text-blue-800'
     );
@@ -94,20 +124,13 @@ async function displayChart() {
         new Chart(ctxLine, {
           type: 'line',
           data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: chartLabels,
             datasets: [
               {
-                label: 'Dataset 1',
-                data: [65, 59, 80, 81, 56, 55, 40],
+                label: 'Number of secured AVS',
+                data: chartData,
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1,
-              },
-              {
-                label: 'Dataset 2',
-                data: [28, 48, 40, 19, 86, 27, 90],
-                fill: false,
-                borderColor: 'rgb(153, 102, 255)',
                 tension: 0.1,
               },
             ],
@@ -135,7 +158,7 @@ async function displayChart() {
     } else {
       console.error('Target element for line chart not found');
     }
-  }, 1000);
+  }); // end listner
 }
 
 console.log('@@ ext is Loading!!');

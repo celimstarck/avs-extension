@@ -1,5 +1,5 @@
 export type OperatorAVSSecured = {
-  blockTimeStamps: string[];
+  blockTimestamps: string[];
   liveCount: number[];
 };
 
@@ -8,7 +8,7 @@ export type OperatorAVSRelationshipElement = {
   avs: string;
   status: boolean;
   blockNumber: number;
-  blockTimeStamp: number;
+  blockTimestamp: number;
   transactionHash: string;
 };
 

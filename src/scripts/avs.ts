@@ -2,35 +2,16 @@ import Chart from 'chart.js/auto';
 
 import axios, { AxiosResponse } from 'axios';
 
+function sendDataToContentScript(data: any) {
+  window.postMessage({ type: 'SEND_DATA', data: data }, '*');
+}
+
 // Define an interface for the request data
-interface Post {
-  operatorAddress: string;
-}
-
-// Define an interface for the response data
-interface CreatedPost extends Post {
-  id: number;
-}
-
-// Function to create a new post
-async function createPost(postData: Post): Promise<CreatedPost> {
-  try {
-    // Make a POST request
-    const response: AxiosResponse<CreatedPost> = await axios.post(
-      'https://52cc-178-51-98-244.ngrok-free.app/dev/getOperatorAvsRelationshipAtBlock',
-      postData
-    );
-
-    // Return the response data
-    return response.data;
-  } catch (error) {
-    // Handle error
-    console.error('Error creating post:', error);
-    throw error;
-  }
-}
-
 async function displayChart() {
+  const frontendData = {
+    operatorAddress: '0xa42cd0029f681b08b61f535e846f2a36f468c1c2',
+  };
+  sendDataToContentScript(frontendData);
   window.addEventListener('createdPostReady', (event) => {
     //const createdPost1 = event.detail;
     console.log('Accessing Created Post in operator.ts:', event);

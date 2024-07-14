@@ -1,26 +1,25 @@
-import { OperatorAVSRelationshipEndpoint } from '../types/OperatorAVSTypes';
+import { OperatorAVSRelationshipElement, OperatorAVSRelationshipEndpoint } from '../types/OperatorAVSTypes';
 import { OperatorAVSSecured } from '../types/OperatorAVSTypes';
 
-function getListFromAVSOperatorData(endpoint: OperatorAVSRelationshipEndpoint): OperatorAVSSecured {
-  if (endpoint.status !== 'success') {
-    throw new Error('Failed to fetch data');
-  }
+function getListFromAVSOperatorData(results: OperatorAVSRelationshipElement[]): OperatorAVSSecured {
+  // Trier les résultats par blockTimeStamp
+  const sortedResults = results.sort((a, b) => a.blockTimestamp - b.blockTimestamp);
 
-  // Sort results by blockTimestamp
-  const sortedResults = endpoint.results.sort((a, b) => a.blockTimeStamp - b.blockTimeStamp);
-
-  const blockTimeStamps: string[] = [];
+  const blockTimestamps: string[] = [];
   const liveCount: number[] = [];
 
   let cumulativeStatus = 0;
 
+  // Itérer sur les résultats triés
   for (const result of sortedResults) {
-    blockTimeStamps.push(result.blockTimeStamp.toString());
+    blockTimestamps.push(result.blockTimestamp.toString());
+
+    // Cumuler le statut
     cumulativeStatus += result.status ? 1 : -1;
     liveCount.push(cumulativeStatus);
   }
 
-  return { blockTimeStamps, liveCount };
+  return { blockTimestamps, liveCount };
 }
 
 export default getListFromAVSOperatorData;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-//import { apiBaseUrl } from '../environments/api';
+// import { apiBaseUrl } from '../environments/api';
 
 interface Dictionary {
   [key: string]: any;
@@ -24,8 +24,9 @@ function getOperatorData(operatorName: string | null | undefined) {
     return 'No data';
   }
 }
+
 type OperatorAVSSecured = {
-  blockTimeStamps: string[];
+  blockTimestamps: string[];
   liveCount: number[];
 };
 
@@ -34,7 +35,7 @@ type OperatorAVSRelationshipElement = {
   avs: string;
   status: boolean;
   blockNumber: number;
-  blockTimeStamp: number;
+  blockTimestamp: number;
   transactionHash: string;
 };
 
@@ -43,101 +44,61 @@ type OperatorAVSRelationshipEndpoint = {
   results: OperatorAVSRelationshipElement[];
 };
 
-/* export async function getOperatorAVSSecured(operatorAddress: string) {
-  // Dans le front, il nous faut:
-  // Labels: liste de tous les TimeStampBlock
-  // datasets" data: liste de tous les count : 1, 2, 1 ...
+type getOperatorAVSSecuredType = {
+  operatorAddress: string;
+};
 
-  let responseData = null;
+export async function getOperatorAVSSecured(operatorAddress: string) {
   const apiUrl = process.env['BASE_URL_API_ENDPOINT'] + API_ENDPOINT;
-
-  console.log('api URL ', apiUrl);
 
   try {
     const data = {
       operatorAddress: operatorAddress,
     };
 
-    console.log('data : ', data);
+    console.log('Data:', data);
 
-    responseData = await fetch(apiUrl, {
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify(data),
-    }).then((response) => {
-      console.log('response:', response);
-      switch (response.status) {
-        case 200:
-          return response.json() as Promise<OperatorAVSRelationshipEndpoint>;
-        case 400:
-          console.error('400');
-          break;
-        case 404:
-          console.error('404');
-          break;
-        case 500:
-          console.error('500');
-          break;
-        default:
-          console.error('unknown');
-          break;
-      }
-      return null;
     });
-  } catch {
-    return null;
-  }
-} */
-export async function getOperatorAVSSecured(operatorAddress: string) {
-  // Dans le front, il nous faut:
-  // Labels: liste de tous les TimeStampBlock
-  // datasets" data: liste de tous les count : 1, 2, 1 ...
 
-  let responseData = null;
-
-  console.log('');
-  //const apiUrl = process.env['BASE_URL_API_ENDPOINT'] + API_ENDPOINT;
-  const apiUrl = 'https://api.eigenexplorer.com/version';
-
-  console.log('api URL ', apiUrl);
-
-  try {
-    const data = {
-      operatorAddress: operatorAddress,
-    };
-
-    console.log('data : ', data);
-
-    responseData = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        Accept: '*/*',
-      },
-    }).then((response) => {
-      console.log('response:', response);
-      switch (response.status) {
-        case 200:
-          return response.json();
-        case 400:
-          console.error('400');
-          break;
-        case 404:
-          console.error('404');
-          break;
-        case 500:
-          console.error('500');
-          break;
-        default:
-          console.error('unknown');
-          break;
-      }
-      return null;
-    });
-  } catch {
-    return null;
+    switch (response.status) {
+      case 200:
+        const jsonResponse = (await response.json()) as OperatorAVSRelationshipEndpoint;
+        if (jsonResponse.status === 'success') {
+          return jsonResponse.results;
+          /*const blockTimestamps = jsonResponse.results.map((result) => {
+            console.log('result blockTimestamps:', result);
+            const test = result.blockTimestamp;
+            console.log('result blocksitimetamp, te', test);
+            const testDate = new Date(test);
+            console.log('testDate:. ', testDate);
+            return new Date(result.blockTimestamp * 1000).toISOString();
+          });
+          const liveCount = jsonResponse.results.map((result) => result.blockNumber); // Adjust according to actual required data
+          return { blockTimestamps, liveCount }; */
+        }
+        break;
+      case 400:
+        console.error('400: Bad Request');
+        break;
+      case 404:
+        console.error('404: Not Found');
+        break;
+      case 500:
+        console.error('500: Internal Server Error');
+        break;
+      default:
+        console.error('Unknown Error:', response.status);
+        break;
+    }
+  } catch (error) {
+    console.error('Fetch Error:', error);
   }
 }
+
 export default getOperatorData;
