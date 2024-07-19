@@ -40,12 +40,12 @@ export const manifest: Manifest.WebExtensionManifest = {
   version: version,
   host_permissions: ['<all_urls>'],
   description: 'Know your AVS on EigenLayer!',
-  content_security_policy: {
+  /*   content_security_policy: {
     sandbox:
       "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';",
     extension_pages:
-      "script-src 'self'; object-src 'self'; connect-src 'self' https://*.vercel-scripts.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://polygon-mumbai-infura.wallet.coinbase.com https://cloudflare-eth.com https://api-prod-useast1.eigenlayer.xyz https://rpc.ankr.com https://mainnet-infura.wallet.coinbase.com/ https://explorer-api.walletconnect.com/ wss://*.walletconnect.org wss://relay.walletconnect.com wss://*.walletlink.org https://*.walletconnect.com https://*.sentry.io https://*.alchemy.com https://ethereum-holesky.publicnode.com https://webserver-testnet-holesky.eigenlayer.xyz https://webserver-preprod-holesky.eigenlayer.xyz https://webserver-mainnet-ethereum.eigenlayer.xyz https://api.web3modal.com https://ethereum-rpc.publicnode.com https://eth.merkle.io https://eth.llamarpc.com https://ethereum-holesky-rpc.publicnode.com https://52cc-178-51-98-244.ngrok-free.app;",
-  },
+      "script-src 'self'; object-src 'self'; connect-src 'self' https://*.vercel-scripts.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://polygon-mumbai-infura.wallet.coinbase.com https://cloudflare-eth.com https://api-prod-useast1.eigenlayer.xyz https://rpc.ankr.com https://mainnet-infura.wallet.coinbase.com/ https://explorer-api.walletconnect.com/ wss://*.walletconnect.org wss://relay.walletconnect.com wss://*.walletlink.org https://*.walletconnect.com https://*.sentry.io https://*.alchemy.com https://ethereum-holesky.publicnode.com https://webserver-testnet-holesky.eigenlayer.xyz https://webserver-preprod-holesky.eigenlayer.xyz https://webserver-mainnet-ethereum.eigenlayer.xyz https://api.web3modal.com https://ethereum-rpc.publicnode.com https://eth.merkle.io https://eth.llamarpc.com https://ethereum-holesky-rpc.publicnode.com https://52cc-178-51-98-244.ngrok-free.app https://7qcjx39s6h.execute-api.eu-west-1.amazonaws.com https://7qcjx39s6h.execute-api.eu-west-1.amazonaws.com/station-; ",
+  }, */
   icons,
   background: {
     service_worker: 'background.bundle.js',

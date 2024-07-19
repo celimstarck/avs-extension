@@ -8,7 +8,7 @@ interface Dictionary {
 }
 
 //const API_ENDPOINT = 'getOperatorAvsRelationshipAtBlock';
-const API_ENDPOINT = 'getSpecificOperatorAvsRegistrationEvents';
+const API_ENDPOINT = '/getSpecificOperatorAvsRegistrationEvents';
 
 const dict: Dictionary = {
   'Pro Delegators': 40,
@@ -59,7 +59,10 @@ type getOperatorAVSSecuredType = {
 };
 
 export async function getRestakersPerOperator(operatorAddress: string) {
-  const apiUrl = 'https://52cc-178-51-98-244.ngrok-free.app/dev/getWeeklyRestaskerCountForOperator';
+  const base_api_url = process.env['BASE_URL_API_ENDPOINT'];
+  //const base_api_url = 'https://2274-2a01-cb08-90a-1d00-87e6-81d0-377d-3681.ngrok-free.app/dev';
+  const endpoint_url = '/getWeeklyRestaskerCountForOperator';
+  const apiUrl = base_api_url + endpoint_url;
 
   try {
     const data = {

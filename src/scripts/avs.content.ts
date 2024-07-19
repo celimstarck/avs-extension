@@ -1,6 +1,6 @@
 import { InternalMessage } from '../types/internal';
 
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 
 // Define an interface for the request data
 interface Post {
@@ -24,12 +24,24 @@ async function handleMessage(event: any) {
 
 // Function to create a new post
 async function createPost(postData: Post) {
+  const base_api_url = process.env['BASE_URL_API_ENDPOINT'];
+  //const base_api_url = 'https://2274-2a01-cb08-90a-1d00-87e6-81d0-377d-3681.ngrok-free.app/dev';
+  const endpoint_url = '/getOperatorAvsRelationshipAtBlock';
+  const apiUrl = base_api_url + endpoint_url;
+
   try {
     // Make a POST request
-    const response: AxiosResponse = await axios.post(
-      'https://52cc-178-51-98-244.ngrok-free.app/dev/getOperatorAvsRelationshipAtBlock',
-      postData
-    );
+
+    /* const config: AxiosRequestConfig = {
+      headers: {
+        'Content-Type': 'application/json',
+        Origin: 'https://app.eigenlayer.xyz', // The origin of your request
+        'Custom-Header': 'CustomValue',
+        'Access-Control-Allow-Origin': '*',
+      },
+    }; */
+
+    const response: AxiosResponse = await axios.post(apiUrl, postData);
 
     // Return the response data
     return response.data;
